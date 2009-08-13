@@ -1,15 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class Label(models.Model):
-    LABEL_TYPES = (
-        (u'c1', u'label1'),
-        (u'c2', u'label2'),
-    )
-    name = models.CharField(max_length=50, choices=LABEL_TYPES)
-    def __unicode__(self):
-        return self.name
-
 class Message(models.Model):
     name = models.CharField(max_length=50)
     message = models.CharField(max_length=200)
@@ -19,12 +10,24 @@ class Message(models.Model):
     owner = models.ForeignKey(User, related_name="owner_user")
 
     def __unicode__(self):
-        return self.post_date.ToString() + ' ' + self.message
+        # wanted to add post_date field, but didn't found how to get string representation.
+        return self.owner.username + ' ' + self.name
+
+class Label(models.Model):
+    LABEL_TYPES = (
+        (u'c1', u'label1'),
+        (u'c2', u'label2'),
+    )
+    name = models.CharField(max_length=50, choices=LABEL_TYPES)
+
+    def __unicode__(self):
+        return self.name
 
 class LabelList(models.Model):
     message = models.ForeignKey(Message)
     label = models.ForeignKey(Label)
     user = models.ForeignKey(User)
+
     def __unicode__(self):
         return self.user + ' ' + self.label
 
@@ -36,8 +39,9 @@ class RatingList(models.Model):
     )
     rating = models.CharField(max_length=10, choices=RATINGS)
     user = models.ForeignKey(User)
+
     def __unicode__(self):
-        return self.user + ' ' + self.rating
+        return self.user.username + ' ' + self.rating
 
 class Category(models.Model):
     CATEGORY_TYPES = (
@@ -48,6 +52,3 @@ class Category(models.Model):
 
     def __unicode__(self):
         return self.name
-
-
-

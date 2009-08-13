@@ -1,8 +1,8 @@
-from bbs_site.bbs.models import RatingList
-from bbs_site.bbs.models import Message
-from bbs_site.bbs.models import LabelList
-from bbs_site.bbs.models import Category
-from bbs_site.bbs.models import Label
+from pybbs.bbs.models import RatingList
+from pybbs.bbs.models import Message
+from pybbs.bbs.models import LabelList
+from pybbs.bbs.models import Category
+from pybbs.bbs.models import Label
 
 from django.contrib import admin
 
