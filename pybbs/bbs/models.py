@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Message(models.Model):
     name = models.CharField(max_length=50)
-    message = models.CharField(max_length=200)
+    message = models.TextField(max_length=200)
     post_date = models.DateTimeField(auto_now=True)
 
     parent = models.ForeignKey('self', related_name='parent_message', null=True, blank=True)
@@ -43,12 +43,16 @@ class RatingList(models.Model):
     def __unicode__(self):
         return self.user.username + ' ' + self.rating
 
-class Category(models.Model):
-    CATEGORY_TYPES = (
-        (u'c1', u'category1'),
-        (u'c2', u'category2'),
+class CategoryList(models.Model):
+    CATEGORIES = (
+        (u'root', u'Root category'),
+        (u'c1', u'test category1'),
+        (u'c2', u'test category2'),
+        (u'c3', u'test category3'),
+        (u'c4', u'test category4'),
     )
-    name = models.CharField(max_length=50, choices=CATEGORY_TYPES)
+    category = models.CharField(max_length=50, choices=CATEGORIES)
+    message = models.ForeignKey(Message)
 
     def __unicode__(self):
-        return self.name
+        return self.message + ' ' + self.category
