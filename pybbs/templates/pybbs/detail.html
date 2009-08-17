@@ -1,0 +1,26 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    Title:
+    {{ message }}
+    <br>
+    Message: 
+    {{message.message}}
+  </body>
+</html>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="/pybbs/{{ message.id }}/reply/" method="post">
+    <input type="text" id="id_title" name="title" value="Re:{{ message.title }}" />
+    <textarea id="id_message" rows="10" cols="40" name="message"></textarea>
+<input type="submit" value="Reply" />
+</form>

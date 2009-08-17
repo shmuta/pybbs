@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Message(models.Model):
-    name = models.CharField(max_length=50)
+    title = models.CharField(max_length=50)
     message = models.TextField(max_length=200)
     post_date = models.DateTimeField(auto_now=True)
 
@@ -11,7 +11,7 @@ class Message(models.Model):
 
     def __unicode__(self):
         # wanted to add post_date field, but didn't found how to get string representation.
-        return self.owner.username + ' ' + self.name
+        return self.title
 
 class Label(models.Model):
     LABEL_TYPES = (
