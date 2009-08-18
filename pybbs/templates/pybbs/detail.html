@@ -4,23 +4,40 @@ and open the template in the editor.
 -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-  <head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    Title:
-    {{ message }}
-    <br>
-    Message: 
-    {{message.message}}
-  </body>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        {% if parent_list %}
+            {% for parent in parent_list %}
+                <a href="/pybbs/{{parent.id}}">{{ parent.title }}</a> >
+            {% endfor %}
+        {% endif %}
+        {{ message.title }}
+        <br>
+        Message:
+        {{message.message}}
+    </body>
 </html>
+
+{% if reply_list %}
+<ul>
+    {% for reply in reply_list %}
+        <li><a href="/pybbs/{{reply.id}}">{{ reply.title }}</a></li>
+        {{ reply.message }}
+    {% endfor %}
+</ul>
+{% else %}
+<p>No replies. Be the first one.</p>
+{% endif %}
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
+{% if user.is_authenticated %}
 <form action="/pybbs/{{ message.id }}/reply/" method="post">
     <input type="text" id="id_title" name="title" value="Re:{{ message.title }}" />
     <textarea id="id_message" rows="10" cols="40" name="message"></textarea>
-<input type="submit" value="Reply" />
+    <input type="submit" value="Reply" />
 </form>
+{% endif %}
