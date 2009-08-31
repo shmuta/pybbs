@@ -21,12 +21,12 @@
           </td>
         </tr>
         <tr>
-          <td>Message: {{message.message}}</td>
+          <td>Message: {{message.body}}</td>
         </tr>
         {% if reply_list %}
             {% for reply in reply_list %}
             <tr align="left">
-              <td><a href="/pybbs/{{reply.id}}">{{ reply.title }}</a>: {{ reply.message }}</td>
+              <td><a href="/pybbs/{{reply.id}}">{{ reply.title }}</a>: {{ reply.body }}</td>
             </tr>
             {% endfor %}
         {% else %}

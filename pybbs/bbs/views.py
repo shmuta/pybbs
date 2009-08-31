@@ -1,21 +1,23 @@
-#django imports
-from django.shortcuts import render_to_response, get_object_or_404
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
-#pybbs imports
-from pybbs.bbs.models import Message
 #python imports
 from types import NoneType
 
+#django imports
+from django.template import Context, loader
+from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 
+#pybbs imports
+from pybbs.bbs.models import Message
+
 def index(request):
-    ''' Temporary render detail for root message '''
-    try:
-        root = Message.objects.filter(title = 'root')[0]
-        return detail(request, root.id)
-    except (LookupError):
-        return render_to_response('pybbs/detail.html', {'error_message': "LookupError Error",})
+    root_message_list = Message.objects.filter(parent=None).order_by('-post_date')
+    index = loader.get_template('pybbs/index.html')
+    c = Context({
+        'root_message_list': root_message_list,
+    })
+    return HttpResponse(index.render(c))
 
 def detail(request, message_id):
     message        = get_object_or_404(Message, pk=message_id)

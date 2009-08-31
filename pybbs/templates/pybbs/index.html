@@ -4,6 +4,15 @@
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
-    <body>    
+    <body>
+ {% if root_message_list %}
+     <ul>
+     {% for message in root_message_list %}
+        <li><a href="{{message.id}}">{{ message.title }}</a></li>
+     {% endfor %}
+     </ul>
+ {% else %}
+     <p>No messagess are available.</p>
+ {% endif %}
     </body>
 </html>
