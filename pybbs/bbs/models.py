@@ -2,12 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Message(models.Model):
-    title = models.CharField(max_length=50)
-    message = models.TextField(max_length=200)
+    title     = models.CharField(max_length=50)
+    message   = models.TextField(max_length=200)
     post_date = models.DateTimeField(auto_now=True)
-
-    parent = models.ForeignKey('self', related_name='parent_message', null=True, blank=True)
-    owner = models.ForeignKey(User, related_name="owner_user")
+    parent    = models.ForeignKey('self', related_name='related_messages', null=True, blank=True)
+    owner     = models.ForeignKey( User,  related_name='pybbs_message_set')
 
     def __unicode__(self):
         # wanted to add post_date field, but didn't found how to get string representation.

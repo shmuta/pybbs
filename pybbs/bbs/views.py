@@ -10,27 +10,23 @@ from types import NoneType
 from django.http import HttpResponse
 
 def index(request):
-    '''Temporary render detail for root message '''
+    ''' Temporary render detail for root message '''
     try:
         root = Message.objects.filter(title = 'root')[0]
         return detail(request, root.id)
     except (LookupError):
         return render_to_response('pybbs/detail.html', {'error_message': "LookupError Error",})
-    except:
-        return render_to_response('pybbs/detail.html', {'error_message': "Unknown Error",})
-    
 
 def detail(request, message_id):
-    m = get_object_or_404(Message, pk=message_id)
-    reply_list = Message.objects.filter(parent=m)
-
-    current_parent = m.parent
-    parent_list = [current_parent]
-    while ((not isinstance(current_parent, NoneType)) and (current_parent.title != 'root')):
+    message        = get_object_or_404(Message, pk=message_id)
+    reply_list     = message.related_messages.all()
+    current_parent = message.parent
+    parent_list    = [current_parent]
+    while (not isinstance(current_parent, NoneType)):
         current_parent = current_parent.parent
         parent_list.insert(0, current_parent)
     return render_to_response('pybbs/detail.html', {
-            'message': m,
+            'message': message,
             'parent_list': parent_list,
             'reply_list': reply_list,
             'user': request.user
