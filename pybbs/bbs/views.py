@@ -1,5 +1,4 @@
 #django imports
-from django.template import Context, loader
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -11,14 +10,15 @@ from types import NoneType
 from django.http import HttpResponse
 
 def index(request):
-
-    root = Message.objects.filter(title = 'root')
-    latest_message_list = Message.objects.filter(parent=root).order_by('-post_date')[:5]
-    index = loader.get_template('pybbs/index.html')
-    c = Context({
-        'latest_message_list': latest_message_list,
-    })
-    return HttpResponse(index.render(c))
+    '''Temporary render detail for root message '''
+    try:
+        root = Message.objects.filter(title = 'root')[0]
+        return detail(request, root.id)
+    except (LookupError):
+        return render_to_response('pybbs/detail.html', {'error_message': "LookupError Error",})
+    except:
+        return render_to_response('pybbs/detail.html', {'error_message': "Unknown Error",})
+    
 
 def detail(request, message_id):
     m = get_object_or_404(Message, pk=message_id)
@@ -40,22 +40,15 @@ def reply(request, message_id):
     parent_message = get_object_or_404(Message, pk=message_id)
     if request.user.is_authenticated():
         try:
+            error_message = "Error: not specified a message title."
             title = request.POST['title']
-        except (KeyError):
-            # Redisplay the message detail form.
-            return render_to_response('pybbs/detail.html', {
-                'message': parent_message,
-                'error_message': "You didn't specify a message title.",
-            })
-        #TODO: ekondrashev 16.08.09: Maybe there is a way to know what field is missing from
-        #KeyError to avoid duplication of code, need to figure out
-        try:
+            error_message = "Error: not specified a message text."
             message = request.POST['message']
         except (KeyError):
             # Redisplay the message detail form.
             return render_to_response('pybbs/detail.html', {
                 'message': parent_message,
-                'error_message': "You didn't specify a message text.",
+                'error_message': error_message,
             })
         else:
             new_message = Message(parent=parent_message, title=title, message=message, owner=request.user)
