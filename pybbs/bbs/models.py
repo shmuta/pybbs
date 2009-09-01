@@ -26,16 +26,28 @@ class LabelList(models.Model):
     def __unicode__(self):
         return self.user + ' ' + self.label
 
+class Rating(models.Model):
+    value    = models.CharField(max_length=10)
+
+    def __unicode__(self):
+        return self.value
+
 class RatingList(models.Model):
     message   = models.ForeignKey(Message)
-    rating    = models.CharField(max_length=10)
+    rating    = models.ForeignKey(Rating)
     user      = models.ForeignKey(User)
 
     def __unicode__(self):
         return self.user.username + ' ' + self.rating
 
+class Category(models.Model):
+    name      = models.CharField(max_length=50)
+
+    def __unicode__(self):
+        return self.name
+
 class CategoryList(models.Model):
-    category  = models.CharField(max_length=50)
+    category  = models.ForeignKey(Category)
     message   = models.ForeignKey(Message)
 
     def __unicode__(self):
