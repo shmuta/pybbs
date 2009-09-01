@@ -23,10 +23,10 @@ def detail(request, message_id):
     message        = get_object_or_404(Message, pk=message_id)
     reply_list     = message.related_messages.all()
     current_parent = message.parent
-    parent_list    = [current_parent]
+    parent_list    = []
     while (not isinstance(current_parent, NoneType)):
-        current_parent = current_parent.parent
         parent_list.insert(0, current_parent)
+        current_parent = current_parent.parent
     return render_to_response('pybbs/detail.html', {
             'message': message,
             'parent_list': parent_list,
@@ -41,7 +41,7 @@ def reply(request, message_id):
             error_message = "Error: not specified a message title."
             title = request.POST['title']
             error_message = "Error: not specified a message text."
-            message = request.POST['message']
+            body = request.POST['body']
         except (KeyError):
             # Redisplay the message detail form.
             return render_to_response('pybbs/detail.html', {
@@ -49,7 +49,7 @@ def reply(request, message_id):
                 'error_message': error_message,
             })
         else:
-            new_message = Message(parent=parent_message, title=title, message=message, owner=request.user)
+            new_message = Message(parent=parent_message, title=title, body=body, owner=request.user)
             new_message.save()
             # Always return an HttpResponseRedirect after successfully dealing
             # with POST data. This prevents data from being posted twice if a

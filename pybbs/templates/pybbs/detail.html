@@ -39,7 +39,7 @@
         {% if user.is_authenticated %}
             <form action="/pybbs/{{ message.id }}/reply/" method="post">
                 <tr align="left"><td><input type="text" id="id_title" name="title" value="Re:{{ message.title }}"/></td></tr>
-                <tr align="left"><td><textarea id="id_message" rows="10" cols="40" name="message"></textarea></td></tr>
+                <tr align="left"><td><textarea id="id_body" rows="10" cols="40" name="body"></textarea></td></tr>
                 <tr align="left"><td><input type="submit" value="Reply" /></td></tr>
             </form>
         {% endif %}
