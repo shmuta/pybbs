@@ -20,9 +20,11 @@
             {{ message.title }}
           </td>
         </tr>
+        {% if message.message %}
         <tr>
           <td>Message: {{message.body}}</td>
         </tr>
+        {% endif %}
         {% if reply_list %}
             {% for reply in reply_list %}
             <tr align="left">
@@ -37,8 +39,13 @@
             {% endif %}
         {% endif %}
         {% if user.is_authenticated %}
+          {% if message.id %}
             <form action="/pybbs/{{ message.id }}/reply/" method="post">
                 <tr align="left"><td><input type="text" id="id_title" name="title" value="Re:{{ message.title }}"/></td></tr>
+          {% else %}
+            <form action="/pybbs/create/" method="post">
+                <tr align="left"><td><input type="text" id="id_title" name="title" value=""/></td></tr>
+          {% endif %}
                 <tr align="left"><td><textarea id="id_body" rows="10" cols="40" name="body"></textarea></td></tr>
                 <tr align="left"><td><input type="submit" value="Reply" /></td></tr>
             </form>

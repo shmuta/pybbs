@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 
 class Message(models.Model):
     title     = models.CharField(max_length=50)
-    body   = models.TextField(max_length=200)
+    body      = models.TextField(max_length=200)
     post_date = models.DateTimeField(auto_now=True)
-    parent    = models.ForeignKey('self', related_name='related_messages', null=True, blank=True)
+    parents   = models.ManyToManyField('self', related_name='related_messages', symmetrical=False, null=True, blank=True)
     owner     = models.ForeignKey( User,  related_name='pybbs_message_set')
 
     def __unicode__(self):

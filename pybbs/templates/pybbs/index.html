@@ -5,6 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
+     <div align="center">
  {% if root_message_list %}
      <ul>
      {% for message in root_message_list %}
@@ -14,5 +15,15 @@
  {% else %}
      <p>No messagess are available.</p>
  {% endif %}
+ {% if user.is_authenticated %}
+     <table>
+       <form action="/pybbs/create/" method="post">
+         <tr align="left"><td><input type="text" id="id_title" name="title" value=""/></td></tr>
+         <tr align="left"><td><textarea id="id_body" rows="10" cols="40" name="body"></textarea></td></tr>
+         <tr align="left"><td><input type="submit" value="Reply" /></td></tr>
+       </form>
+     </table>
+ {% endif %}
+     </div>
     </body>
 </html>
