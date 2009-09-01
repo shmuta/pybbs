@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
@@ -20,9 +21,9 @@
             {{ message.title }}
           </td>
         </tr>
-        {% if message.message %}
+        {% if message.body %}
         <tr>
-          <td>Message: {{message.body}}</td>
+          <td>{% trans 'Message' %}: {{message.body}}</td>
         </tr>
         {% endif %}
         {% if reply_list %}
@@ -34,7 +35,7 @@
         {% else %}
             {% if user.is_authenticated %}
             <tr align="left">
-              <td>No replies. Be the first one.</td>
+              <td>{% trans 'No replies. Be the first one.' %}</td>
             </tr>
             {% endif %}
         {% endif %}
@@ -47,7 +48,7 @@
                 <tr align="left"><td><input type="text" id="id_title" name="title" value=""/></td></tr>
           {% endif %}
                 <tr align="left"><td><textarea id="id_body" rows="10" cols="40" name="body"></textarea></td></tr>
-                <tr align="left"><td><input type="submit" value="Reply" /></td></tr>
+                <tr align="left"><td><input type="submit" value="{% trans 'Reply' %}" /></td></tr>
             </form>
         {% endif %}
       </table>

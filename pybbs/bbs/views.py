@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 
 #pybbs imports
 from pybbs.bbs.models import Message
@@ -11,6 +12,8 @@ from pybbs.bbs.models import Message
 from types import NoneType
 
 def index(request):
+    if hasattr(request, 'session'):
+        print request.session['django_language']
     root_message_list = Message.objects.filter(parents=None).order_by('-post_date')
     return render_to_response('pybbs/index.html', {
         'root_message_list': root_message_list,
@@ -38,9 +41,9 @@ def reply(request, message_id):
     parent_message = get_object_or_404(Message, pk=message_id)
     if request.user.is_authenticated():
         try:
-            error_message = "Error: not specified a message title."
+            error_message = _("Error: not specified a message title.")
             title = request.POST['title']
-            error_message = "Error: not specified a message text."
+            error_message = _("Error: not specified a message text.")
             body = request.POST['body']
         except (KeyError):
             # Redisplay the message detail form.
@@ -59,15 +62,15 @@ def reply(request, message_id):
     else:
         return render_to_response('pybbs/detail.html', {
                 'message': parent_message,
-                'error_message': "You are not logged in.",
+                'error_message': _("You are not logged in."),
             })
     
 def create(request):
     if request.user.is_authenticated():
         try:
-            error_message = "Error: not specified a message title."
+            error_message = _("Error: not specified a message title.")
             title = request.POST['title']
-            error_message = "Error: not specified a message text."
+            error_message = _("Error: not specified a message text.")
             body = request.POST['body']
         except (KeyError):
             # Redisplay the message detail form.
@@ -84,6 +87,6 @@ def create(request):
     else:
         return render_to_response('pybbs/detail.html', {
                 'message': parent_message,
-                'error_message': "You are not logged in.",
+                'error_message': _("You are not logged in."),
             })
-
+   
