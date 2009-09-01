@@ -4,9 +4,16 @@
     <head>
         <title>{{ message.title }}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style type="text/css">
+          #bg {
+   	      background: #CCCCCC; 
+	      padding: 5px;
+          }
+        </style>
     </head>
     <body>
-     <div align="center">
+     <div align="justify" id="bg">
+      {% include 'pybbs/lang.html' %}
       {% if error_message %}
       <strong>{{ error_message }}</strong>
       {% else %}

@@ -5,6 +5,5 @@ urlpatterns = patterns('pybbs.bbs',
     (r'^create/$', 'views.create'),
     (r'^(?P<message_id>\d+)/$', 'views.detail'),
     (r'^(?P<message_id>\d+)/reply/$', 'views.reply'),
-    (r'^i18n/', include('django.conf.urls.i18n')),
 )
 
