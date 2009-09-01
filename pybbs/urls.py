@@ -5,5 +5,5 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^pybbs/', include('pybbs.bbs.urls')),
-    (r'^admin/', include(admin.site.urls))
+    (r'^admin/', include(admin.site.urls)),
 )

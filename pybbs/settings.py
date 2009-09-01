@@ -25,7 +25,7 @@ TIME_ZONE = 'Europe/Kiev'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'ru-UA'
+LANGUAGE_CODE = 'ru'
 
 SITE_ID = 1
 
@@ -61,6 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 )
 
 ROOT_URLCONF = 'pybbs.urls'
@@ -79,4 +80,12 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'pybbs.bbs',
     'django.contrib.admin',
+)
+
+LANGUAGE_COOKIE_NAME = 'django_language'
+
+ugettext = lambda s: s
+LANGUAGES = (
+    ('ru', ugettext('Russian')),
+    ('en', ugettext('English')),
 )
