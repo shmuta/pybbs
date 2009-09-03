@@ -2,7 +2,6 @@
 
 #python imports
 import os
-import sys
 
 #django imports
 from django.core.management import execute_manager
@@ -44,9 +43,8 @@ if __name__ == "__main__":
     if os.path.exists(settings.DATABASE_NAME):
         print "Removing " + settings.DATABASE_NAME
 	os.remove(settings.DATABASE_NAME)
-    sys.argv.append("syncdb")
 
-    execute_manager(settings)
+    execute_manager(settings, ["","syncdb"])
     print "Creating categories"
     for category_name in CATEGORIES:
         category = Category(name=category_name)
