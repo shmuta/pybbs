@@ -4,3 +4,19 @@ border:     0.1em solid black;
 margin:     0.5em;
 padding:    0.5em;
 }
+
+textarea {
+width:100%;
+}
+
+input {
+width:100%;
+}
+
+table {
+width:100%;
+}
+
+input, textarea, select {
+border:1px solid black;
+}
