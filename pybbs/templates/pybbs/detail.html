@@ -1,26 +1,16 @@
+{% extends "pybbs/base.html" %}
+
 {% load i18n %}
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-    <head>
-        <title>{{ message.title }}</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <style type="text/css">
-          #bg {
-    	  background: #CCCCCC; 
-          padding:    0px;
-          margin:     .5em;
-          border:     .1em solid black;
-          padding:    .5em;
-          }
-        </style>
-    </head>
-    <body>
-     <div align="justify" id="bg">
-      {% include 'pybbs/lang.html' %}
+
+{% block title %}
+  {{ message.title }}
+{% endblock %}
+
+{% block center %}
       {% if error_message %}
       <strong>{{ error_message }}</strong>
       {% else %}
-      <table border="0" cellspacing="0" cellpadding="4">
+      <table border="0">
         <tr align="left">
           <td>
             [ <a href="/pybbs/">#</a> ] >
@@ -37,14 +27,19 @@
           </td>
         </tr>
         {% if message.body %}
+        <tr><td><hr></td></tr>
         <tr>
           <td>{% trans 'Message' %}: {{message.body}}</td>
         </tr>
+        <tr>
+          <td>{% trans 'Author' %}: {{message.owner.username}}</td>
+        </tr>
         {% endif %}
+        <tr><td><hr></td></tr>
         {% if reply_list %}
             {% for reply in reply_list %}
             <tr align="left">
-              <td><a href="/pybbs/{{reply.id}}/">{{ reply.title }}</a>: {{ reply.body }}</td>
+              <td><a href="/pybbs/{{reply.id}}/">{{ reply.title }}/{{ reply.owner.username }}/</a>: {{ reply.body }} </td> 
             </tr>
             {% endfor %}
         {% else %}
@@ -55,6 +50,7 @@
             {% endif %}
         {% endif %}
         {% if user.is_authenticated %}
+            <tr><td><hr></td></tr>
           {% if message.id %}
             <form action="/pybbs/{{ message.id }}/reply/" method="post">
                 <tr align="left"><td><input type="text" id="id_title" name="title" value="Re:{{ message.title }}"/></td></tr>
@@ -68,6 +64,4 @@
         {% endif %}
       </table>
      {% endif %}
-     </div>
-    </body>
-</html>
+{% endblock %}

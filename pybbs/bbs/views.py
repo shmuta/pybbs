@@ -1,5 +1,6 @@
 #django imports
 from django.shortcuts import render_to_response, get_object_or_404
+from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
@@ -13,9 +14,9 @@ from types import NoneType
 
 def index(request):
     root_message_list = Message.objects.filter(parents=None).order_by('-post_date')
-    return render_to_response('pybbs/index.html', {
-        'root_message_list': root_message_list,
-        'user': request.user,})
+    return render_to_response('pybbs/index.html',
+             {'root_message_list': root_message_list,},
+             context_instance=RequestContext(request))
 
 def add_parents(parents, parent_list):
     if parents:
@@ -26,15 +27,13 @@ def add_parents(parents, parent_list):
 
 def detail(request, message_id):
     message     = get_object_or_404(Message, pk=message_id)
-    reply_list  = Message.objects.filter(parents=message)
-    parent_list = []
-    add_parents (message.parents.all(), parent_list)
+    reply_list  = message.related_messages.all()
+    parent_list = add_parents (message.parents.all(), parent_list = [])
     return render_to_response('pybbs/detail.html', {
             'message': message,
             'parent_list': parent_list,
             'reply_list': reply_list,
-            'user': request.user
-            })
+            }, context_instance=RequestContext(request))
 
 def reply(request, message_id):
     parent_message = get_object_or_404(Message, pk=message_id)
@@ -47,7 +46,6 @@ def reply(request, message_id):
         except (KeyError):
             # Redisplay the message detail form.
             return render_to_response('pybbs/detail.html', {
-                'message': parent_message,
                 'error_message': error_message,
             })
         else:
@@ -60,7 +58,6 @@ def reply(request, message_id):
             return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(message_id,)))
     else:
         return render_to_response('pybbs/detail.html', {
-                'message': parent_message,
                 'error_message': _("You are not logged in."),
             })
     
@@ -85,7 +82,6 @@ def create(request):
             return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(new_message.id,)))
     else:
         return render_to_response('pybbs/detail.html', {
-                'message': parent_message,
                 'error_message': _("You are not logged in."),
             })
-   
+
