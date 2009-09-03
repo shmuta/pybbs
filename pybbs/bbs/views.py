@@ -26,9 +26,8 @@ def add_parents(parents, parent_list):
 
 def detail(request, message_id):
     message     = get_object_or_404(Message, pk=message_id)
-    reply_list  = Message.objects.filter(parents=message)
-    parent_list = []
-    add_parents (message.parents.all(), parent_list)
+    reply_list  = message.related_messages.all()
+    parent_list = add_parents (message.parents.all(), parent_list = [])
     return render_to_response('pybbs/detail.html', {
             'message': message,
             'parent_list': parent_list,
@@ -60,7 +59,6 @@ def reply(request, message_id):
             return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(message_id,)))
     else:
         return render_to_response('pybbs/detail.html', {
-                'message': parent_message,
                 'error_message': _("You are not logged in."),
             })
     
@@ -85,7 +83,6 @@ def create(request):
             return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(new_message.id,)))
     else:
         return render_to_response('pybbs/detail.html', {
-                'message': parent_message,
                 'error_message': _("You are not logged in."),
             })
-   
+
