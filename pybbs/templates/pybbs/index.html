@@ -20,7 +20,7 @@
       {% if root_message_list %}
       <ul>
         {% for message in root_message_list %}
-        <li><a href="{{message.id}}">{{ message.title }}</a></li>
+        <li><a href="/pybbs/{{message.id}}/">{{ message.title }}</a></li>
         {% endfor %}
       </ul>
       {% else %}

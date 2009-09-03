@@ -57,7 +57,7 @@ def reply(request, message_id):
             # Always return an HttpResponseRedirect after successfully dealing
             # with POST data. This prevents data from being posted twice if a
             # user hits the Back button.
-            return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(new_message.id,)))
+            return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(message_id,)))
     else:
         return render_to_response('pybbs/detail.html', {
                 'message': parent_message,
