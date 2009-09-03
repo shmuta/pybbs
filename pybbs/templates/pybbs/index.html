@@ -6,8 +6,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style type="text/css">
       #bg {
-   	  background: #CCCCCC; 
-	  padding: 5px;
+      background: #CCCCCC; 
+      padding:    0px;
+      margin:     .5em;
+      border:     .1em solid black;
+      padding:    .5em;
       }
     </style>
   </head>
@@ -17,7 +20,7 @@
       {% if root_message_list %}
       <ul>
         {% for message in root_message_list %}
-        <li><a href="{{message.id}}">{{ message.title }}</a></li>
+        <li><a href="/pybbs/{{message.id}}/">{{ message.title }}</a></li>
         {% endfor %}
       </ul>
       {% else %}

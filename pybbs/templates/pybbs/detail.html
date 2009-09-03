@@ -6,8 +6,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style type="text/css">
           #bg {
-   	      background: #CCCCCC; 
-	      padding: 5px;
+    	  background: #CCCCCC; 
+          padding:    0px;
+          margin:     .5em;
+          border:     .1em solid black;
+          padding:    .5em;
           }
         </style>
     </head>
@@ -20,12 +23,17 @@
       <table border="0" cellspacing="0" cellpadding="4">
         <tr align="left">
           <td>
+            [ <a href="/pybbs/">#</a> ] >
             {% if parent_list %}
-                {% for parent in parent_list %}
-                     <a href="/pybbs/{{parent.id}}">{{ parent.title }}</a> >
+                {% for parents in parent_list %}
+                   [
+                   {% for parent in parents %}
+                     <a href="/pybbs/{{parent.id}}/">{{ parent.title }}</a>;
+                   {% endfor %}
+                   ] >
                 {% endfor %}
             {% endif %}
-            {{ message.title }}
+            '{{ message.title }}'
           </td>
         </tr>
         {% if message.body %}
@@ -36,7 +44,7 @@
         {% if reply_list %}
             {% for reply in reply_list %}
             <tr align="left">
-              <td><a href="/pybbs/{{reply.id}}">{{ reply.title }}</a>: {{ reply.body }}</td>
+              <td><a href="/pybbs/{{reply.id}}/">{{ reply.title }}</a>: {{ reply.body }}</td>
             </tr>
             {% endfor %}
         {% else %}
