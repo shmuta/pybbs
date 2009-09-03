@@ -12,16 +12,15 @@ from pybbs.bbs.models import Message
 from types import NoneType
 
 def index(request):
-    if hasattr(request, 'session'):
-        print request.session['django_language']
     root_message_list = Message.objects.filter(parents=None).order_by('-post_date')
     return render_to_response('pybbs/index.html', {
         'root_message_list': root_message_list,
         'user': request.user,})
 
 def add_parents(parents, parent_list):
+    if parents:
+        parent_list.insert(0, parents)
     for current_parent in parents:
-        parent_list.insert(0, current_parent)
         add_parents(current_parent.parents.all(), parent_list)
     return parent_list
 

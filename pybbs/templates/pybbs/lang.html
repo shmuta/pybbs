@@ -1,29 +1,17 @@
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
 {% get_available_languages as LANGUAGES %}
-
-<table width="100%">
-  <tr>
-    <td>
-      <div align="left">
-        <a href="/pybbs/">{% trans 'Home' %}</a>
-      </div>
-    </td>
-    <td>
-      <div align="right">
-        <form action="/i18n/setlang/" method="POST">
-          <input name="next" type="hidden" value="/pybbs/" />
-          <select name="language" onchange="submit();" >
-            {% for lang in LANGUAGES %}
-            {% ifequal LANGUAGE_CODE lang.0 %}
-            <option selected value="{{ lang.0 }}">{{ lang.1 }}</option>
-            {% else %}
-            <option value="{{ lang.0 }}">{{ lang.1 }}</option>
-            {% endifequal %}
-            {% endfor %}
-          </select>
-        </form>
-      </div>
-    </td>
-  </tr>
-</table>
+<div align="right">
+  <form action="/i18n/setlang/" method="POST">
+    <input name="next" type="hidden" value="" />
+    <select name="language" onchange="submit();" >
+      {% for lang in LANGUAGES %}
+      {% ifequal LANGUAGE_CODE lang.0 %}
+      <option selected value="{{ lang.0 }}">{{ lang.1 }}</option>
+      {% else %}
+      <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+      {% endifequal %}
+      {% endfor %}
+    </select>
+  </form>
+</div>
