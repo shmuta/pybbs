@@ -26,7 +26,6 @@
             '{{ message.title }}'
           </td>
         </tr>
-        {% if message.body %}
         <tr><td><hr></td></tr>
         <tr>
           <td>{% trans 'Message' %}: {{message.body}}</td>
@@ -34,7 +33,6 @@
         <tr>
           <td>{% trans 'Author' %}: {{message.owner.username}}</td>
         </tr>
-        {% endif %}
         <tr><td><hr></td></tr>
         {% if reply_list %}
             {% for reply in reply_list %}
