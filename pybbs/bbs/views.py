@@ -48,6 +48,13 @@ def detail(request, message_id, template='pybbs/detail.html'):
     context = _list_messages(request, message_id)
     return render_to_response(template, {}, context)
 
+def rss(request,template='rss.xml',context=None):
+    message_list = Message.objects.all().order_by('-post_date')[:7]
+    ctxt_dict = {'host': request.META['HTTP_HOST'], 'message_list': message_list} 
+    context   = RequestContext(request, ctxt_dict) if context is None \
+                else context.update(ctxt_dict)
+    return render_to_response(template, {}, context, mimetype="application/xml")
+
 def reply(request, message_id):
     parent_message = get_object_or_404(Message, pk=message_id)
     if request.user.is_authenticated():
