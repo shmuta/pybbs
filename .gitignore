@@ -1,3 +1,4 @@
 *.pyc
 pybbs/pybbs.sqlite3
+thumbs.db
 *.mo
