@@ -1,0 +1,10 @@
+{% extends "pybbs/base.html" %}
+{% load i18n %}
+
+{% block center %}
+<form method="post" action=".">
+  {{ form.as_p }}
+
+  <input type="submit" value="{% trans 'Submit' %}" />
+</form>
+{% endblock %}
