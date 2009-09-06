@@ -9,6 +9,16 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'fedoronchuk@gmail.com'
+EMAIL_HOST_PASSWORD = '050886050886'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+LOGIN_REDIRECT_URL = '/pybbs/'  
+
+
+
 DATABASE_ENGINE   = 'sqlite3'       # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME     = 'pybbs.sqlite3' # Or path to database file if using sqlite3.
 DATABASE_USER     = ''              # Not used with sqlite3.
@@ -80,6 +90,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'pybbs.bbs',
     'django.contrib.admin',
+	'pybbs.registration',
 )
 
 LANGUAGE_COOKIE_NAME = 'django_language'
@@ -89,3 +100,7 @@ LANGUAGES = (
     ('ru', ugettext('Russian')),
     ('en', ugettext('English')),
 )
+
+#	the number of days activation keys will remain valid
+#   after an account is registered
+ACCOUNT_ACTIVATION_DAYS = 7

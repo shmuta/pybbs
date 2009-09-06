@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
     (r'^pybbs/', include('pybbs.bbs.urls')),
     (r'^i18n/',  include('django.conf.urls.i18n')),
+	(r'^accounts/', include('pybbs.registration.urls')),
 )
