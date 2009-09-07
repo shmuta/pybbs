@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block center %}
-      {% if root_message_list %}
+      {% if thems %}
       <ul>
-        {% for message in root_message_list %}
+        {% for message in thems %}
         <li><a href="/pybbs/{{message.id}}/">{{ message.title }} /{{ message.owner.username }}/ </a></li>
         {% endfor %}
       </ul>

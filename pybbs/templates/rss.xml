@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<rss version="2.0">
+  <channel>
+    <title>PyBBS</title>
+    <language>{{LANGUAGE_CODE}}</language>
+    <link>http://{{host}}/pybbs/rss.xml</link>
+    <pubDate>{{message_list.1.post_date|date:"r"}}</pubDate>
+    <description><![CDATA[]]></description>
+    <image>
+      <url>http://{{host}}/media/favicon.ico</url>
+      <link>http://{{host}}/pybbs/</link>
+    </image>
+    {% for message in message_list %}
+    <item>
+      <link>http://{{host}}/pybbs/{{message.id}}/</link>
+      <guid isPermaLink="true">http://{{host}}/pybbs/{{message.id}}/</guid>
+      <title><![CDATA[{{message.title}}]]></title>
+      <pubDate>{{message.post_date|date:"r"}}</pubDate>
+      <description><![CDATA[<table border="0"><tr><td>{% trans 'Message' %}: {{message.body}}</td></tr><tr><td>{% trans 'Author' %}: {{message.owner.username}}</td></tr></table>]]></description>
+      <author>{{message.owner.username}}</author>
+      <!-- <enclosure url="http://{{host}}/pybbs/{{message.id}}/avatar.jpg" type="image/jpeg" length="" /> -->
+      <!-- <category></category> -->
+    </item>
+    {% endfor %}
+  </channel>
+</rss>

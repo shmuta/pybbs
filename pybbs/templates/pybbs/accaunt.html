@@ -1,0 +1,9 @@
+      <div class="accauntblock">{% if user.is_authenticated %}
+       Hello , {{ user.username }} <a href="/accounts/logout/">Logout</a>
+	  {% else %}
+	  <form method="post" action="/accounts/login/">Имя пользователя:<input type="text" name="username" />Пароль: <input type="password" name="password" /></p>
+  <input type="submit" value="Войти" /> <a href="/accounts/register/">Регистрация</a>
+</form>
+
+      {% endif %}
+	  

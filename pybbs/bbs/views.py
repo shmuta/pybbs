@@ -12,28 +12,48 @@ from pybbs.bbs.models import Message
 #python imports
 from types import NoneType
 
-def index(request):
-    root_message_list = Message.objects.filter(parents=None).order_by('-post_date')
-    return render_to_response('pybbs/index.html',
-             {'root_message_list': root_message_list,},
-             context_instance=RequestContext(request))
-
-def add_parents(parents, parent_list):
+def _add_parents(parents, parent_list):
     if parents:
         parent_list.insert(0, parents)
     for current_parent in parents:
-        add_parents(current_parent.parents.all(), parent_list)
+        _add_parents(current_parent.parents.all(), parent_list)
     return parent_list
 
-def detail(request, message_id):
+def _list_messages(request, message_id=None, context=None):
+    """Populates context with message replies"""
     message     = get_object_or_404(Message, pk=message_id)
-    reply_list  = message.related_messages.all()
-    parent_list = add_parents (message.parents.all(), parent_list = [])
-    return render_to_response('pybbs/detail.html', {
-            'message': message,
-            'parent_list': parent_list,
-            'reply_list': reply_list,
-            }, context_instance=RequestContext(request))
+    parent_list = _add_parents(message.parents.all(), parent_list = [])
+    reply_list  = Message.objects.filter(parents=message_id)            \
+                  .order_by('-post_date')
+    ctxt_dict   = {'message': message,'parent_list': parent_list,       \
+                   'reply_list': reply_list}
+    context     = RequestContext(request, ctxt_dict) if context is None \
+                  else context.update(ctxt_dict)
+    return context
+
+def _list_thems(request, context=None):
+    """Populates context with thems messages"""
+    thems     = Message.objects.filter(parents=None)                  \
+                .order_by('-post_date')
+    ctxt_dict = {'thems': thems} 
+    context   = RequestContext(request, ctxt_dict) if context is None \
+                else context.update(ctxt_dict)
+    return context
+
+def index(request, template='pybbs/index.html'):
+    context = _list_thems(request)
+    return render_to_response(template, {}, context)
+
+def detail(request, message_id, template='pybbs/detail.html'):
+    context = _list_messages(request, message_id)
+    return render_to_response(template, {}, context)
+
+def rss(request,template='rss.xml',context=None):
+    message_list = Message.objects.all().order_by('-post_date')[:7]
+    ctxt_dict = {'host': request.META['HTTP_HOST'], 'message_list': message_list} 
+    context   = RequestContext(request, ctxt_dict) if context is None \
+                else context.update(ctxt_dict)
+    return render_to_response(template, {}, context, mimetype="application/xml")
 
 def reply(request, message_id):
     parent_message = get_object_or_404(Message, pk=message_id)
