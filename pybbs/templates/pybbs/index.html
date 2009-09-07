@@ -10,7 +10,7 @@
       {% if thems %}
       <ul>
         {% for theme in thems %}
-        <li><a href="/pybbs/{{message.id}}/">{{ theme.title }} /{{ theme.owner.username }}/ (
+        <li><a href="/pybbs/{{theme.id}}/">{{ theme.title }} /{{ theme.owner.username }}/ (
          {% for category in theme.categorys.all %}
           {{category.name}},
          {% endfor %}

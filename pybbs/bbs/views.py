@@ -65,6 +65,7 @@ def reply(request, message_id):
             body = request.POST['body']
         except (KeyError):
             # Redisplay the message detail form.
+            # TODO: replace this with rendering error.html template
             return render_to_response('pybbs/detail.html', {
                 'error_message': error_message,
             })
@@ -77,6 +78,7 @@ def reply(request, message_id):
             # user hits the Back button.
             return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(message_id,)))
     else:
+        # TODO: replace this with rendering error.html template
         return render_to_response('pybbs/detail.html', {
                 'error_message': _("You are not logged in."),
             })
@@ -90,6 +92,7 @@ def create(request):
             body = request.POST['body']
         except (KeyError):
             # Redisplay the message detail form.
+            # TODO: replace this with rendering error.html template
             return render_to_response('pybbs/detail.html', {
                 'error_message': error_message,
             })
@@ -101,6 +104,7 @@ def create(request):
             # user hits the Back button.
             return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(new_message.id,)))
     else:
+        # TODO: replace this with rendering error.html template
         return render_to_response('pybbs/detail.html', {
                 'error_message': _("You are not logged in."),
             })
@@ -116,10 +120,12 @@ def create_theme(request):
             error_message = _("Error: not specified categories list.")
             categories = request.POST.getlist('categories')
             for category_id in categories:
-                category = get_object_or_404(Category, pk=category_id)
-                ctgrs.append(category)
+                ctgrs.append(get_object_or_404(Category, pk=category_id))
+            if not ctgrs:
+                raise KeyError
         except (KeyError):
             # Redisplay the message detail form.
+            # TODO: replace this with rendering error.html template
             return render_to_response('pybbs/detail.html', {
                 'error_message': error_message,
             })
@@ -133,6 +139,7 @@ def create_theme(request):
             # user hits the Back button.
             return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(new_theme.id,)))
     else:
+        # TODO: replace this with rendering error.html template
         return render_to_response('pybbs/detail.html', {
                 'error_message': _("You are not logged in."),
             })
