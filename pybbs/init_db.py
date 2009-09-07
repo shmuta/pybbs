@@ -19,6 +19,11 @@ from bbs.models import Category
 from bbs.models import Rating
 from bbs.models import Label
 
+#Be sure to set utf-8 encoding at server side
+#For MySQL, for example, add the following lines to my.cnf file:
+#[mysqld]
+#default-character-set=utf8
+#skip-character-set-client-handshake
 CATEGORIES=(
         'Спорт',
         'Юмор',
@@ -39,10 +44,17 @@ LABELS=(
         'label1',
         'label2',
 )
+
+SQLITE_DB_ENGINE="sqlite3"
+
 if __name__ == "__main__":
-    if os.path.exists(settings.DATABASE_NAME):
+    if settings.DATABASE_ENGINE == SQLITE_DB_ENGINE and os.path.exists(settings.DATABASE_NAME):
         print "Removing " + settings.DATABASE_NAME
-	os.remove(settings.DATABASE_NAME)
+        os.remove(settings.DATABASE_NAME)
+    else:
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute("drop database if exists %s; create database %s;" % (settings.DATABASE_NAME, settings.DATABASE_NAME))
 
     execute_manager(settings, ["","syncdb"])
     print "Creating categories"
