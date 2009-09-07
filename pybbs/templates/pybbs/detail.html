@@ -6,6 +6,10 @@
   {{ message.title }}
 {% endblock %}
 
+{% block head %}
+  <link href="/pybbs/rss/{{message.id}}" rel="alternate" title="RSS" type="application/xml" />
+{% endblock %}
+
 {% block center %}
       {% if error_message %}
       <strong>{{ error_message }}</strong>

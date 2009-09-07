@@ -54,7 +54,6 @@ class CategoryList(models.Model):
         return self.message + ' ' + self.category
 
 class Theme(Message):
-    parents   = None
     categorys = models.ManyToManyField(Category, related_name='related_categorys', symmetrical=False, null=True, blank=True)
         
     def __unicode__(self):

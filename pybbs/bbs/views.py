@@ -14,7 +14,7 @@ from types import NoneType
 
 def _add_parents(parents, parent_list):
     if parents:
-        parent_list.insert(0, parents)
+        parent_list.insert(0, parents)    
     for current_parent in parents:
         _add_parents(current_parent.parents.all(), parent_list)
     return parent_list
@@ -51,6 +51,13 @@ def detail(request, message_id, template='pybbs/detail.html'):
 def rss(request,template='rss.xml',context=None):
     message_list = Message.objects.all().order_by('-post_date')[:7]
     ctxt_dict = {'host': request.get_host(), 'message_list': message_list} 
+    context   = RequestContext(request, ctxt_dict) if context is None \
+                else context.update(ctxt_dict)
+    return render_to_response(template, {}, context, mimetype="application/xml")
+
+def rss_by_id(request,message_id,template='rss.xml',context=None):
+    message_list = Message.objects.filter(parents=message_id).order_by('-post_date')[:7]
+    ctxt_dict = {'host': request.get_host(), 'message_list': message_list}
     context   = RequestContext(request, ctxt_dict) if context is None \
                 else context.update(ctxt_dict)
     return render_to_response(template, {}, context, mimetype="application/xml")
