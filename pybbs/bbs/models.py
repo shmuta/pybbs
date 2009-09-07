@@ -52,3 +52,11 @@ class CategoryList(models.Model):
 
     def __unicode__(self):
         return self.message + ' ' + self.category
+
+class Theme(Message):
+    parents   = None
+    categorys = models.ManyToManyField(Category, related_name='related_categorys', symmetrical=False, null=True, blank=True)
+        
+    def __unicode__(self):
+        # wanted to add post_date field, but didn't found how to get string representation.
+        return self.title

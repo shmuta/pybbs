@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 
 #pybbs imports
-from pybbs.bbs.models import Message
+from pybbs.bbs.models import Message, Theme, Category
 
 #python imports
 from types import NoneType
@@ -33,9 +33,9 @@ def _list_messages(request, message_id=None, context=None):
 
 def _list_thems(request, context=None):
     """Populates context with thems messages"""
-    thems     = Message.objects.filter(parents=None)                  \
-                .order_by('-post_date')
-    ctxt_dict = {'thems': thems} 
+    thems     = Theme.objects.all().order_by('-post_date')
+    ctgr_list = Category.objects.all().order_by('-name')
+    ctxt_dict = {'thems': thems, "category_list": ctgr_list} 
     context   = RequestContext(request, ctxt_dict) if context is None \
                 else context.update(ctxt_dict)
     return context
@@ -50,7 +50,7 @@ def detail(request, message_id, template='pybbs/detail.html'):
 
 def rss(request,template='rss.xml',context=None):
     message_list = Message.objects.all().order_by('-post_date')[:7]
-    ctxt_dict = {'host': request.META['HTTP_HOST'], 'message_list': message_list} 
+    ctxt_dict = {'host': request.get_host(), 'message_list': message_list} 
     context   = RequestContext(request, ctxt_dict) if context is None \
                 else context.update(ctxt_dict)
     return render_to_response(template, {}, context, mimetype="application/xml")
@@ -100,6 +100,38 @@ def create(request):
             # with POST data. This prevents data from being posted twice if a
             # user hits the Back button.
             return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(new_message.id,)))
+    else:
+        return render_to_response('pybbs/detail.html', {
+                'error_message': _("You are not logged in."),
+            })
+
+def create_theme(request):
+    ctgrs = []
+    if request.user.is_authenticated():
+        try:
+            error_message = _("Error: not specified a message title.")
+            title = request.POST['title']
+            error_message = _("Error: not specified a message text.")
+            body = request.POST['body']
+            error_message = _("Error: not specified categories list.")
+            categories = request.POST.getlist('categories')
+            for category_id in categories:
+                category = get_object_or_404(Category, pk=category_id)
+                ctgrs.append(category)
+        except (KeyError):
+            # Redisplay the message detail form.
+            return render_to_response('pybbs/detail.html', {
+                'error_message': error_message,
+            })
+        else:
+            new_theme = Theme(title=title, body=body, owner=request.user)
+            new_theme.save()
+            for category in ctgrs:
+                new_theme.categorys.add(category)
+            # Always return an HttpResponseRedirect after successfully dealing
+            # with POST data. This prevents data from being posted twice if a
+            # user hits the Back button.
+            return HttpResponseRedirect(reverse('pybbs.bbs.views.detail', args=(new_theme.id,)))
     else:
         return render_to_response('pybbs/detail.html', {
                 'error_message': _("You are not logged in."),

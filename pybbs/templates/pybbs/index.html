@@ -9,21 +9,39 @@
 {% block center %}
       {% if thems %}
       <ul>
-        {% for message in thems %}
-        <li><a href="/pybbs/{{message.id}}/">{{ message.title }} /{{ message.owner.username }}/ </a></li>
+        {% for theme in thems %}
+        <li><a href="/pybbs/{{message.id}}/">{{ theme.title }} /{{ theme.owner.username }}/ (
+         {% for category in theme.categorys.all %}
+          {{category.name}},
+         {% endfor %}
+        )</a></li>
         {% endfor %}
       </ul>
       {% else %}
-      <p>{% trans 'No messagess are available.' %}</p>
+      <p>{% trans 'No thems are available.' %}</p>
       {% endif %}
       {% if user.is_authenticated %}
       <table border="0">
         <tr><td><hr></td></tr>
-        <form action="/pybbs/create/" method="post">
-          <tr align="left"><td><input type="text" id="id_title" name="title" value=""/></td></tr>
-          <tr align="left"><td><textarea id="id_body" rows="10" cols="40" name="body"></textarea></td></tr>
-          <tr align="left"><td><input type="submit" value="{% trans 'Reply' %}" /></td></tr>
-        </form>
+        <tr><td>
+            <table border="0" cellpadding="2">
+              <form action="/pybbs/create_theme/" method="post">
+                <tr align="left"><td colspan="2"><input type="text" id="id_title" name="title" value=""/></td></tr>
+                <tr align="left">
+                  <td width="90%"><textarea id="id_body" rows="10" cols="40" name="body"></textarea></td>
+                  <td align="justify">
+                    Categories:<br>
+                    <select name="categories" multiple>
+                      {% for category in category_list %}
+                      <option value="{{category.id}}">{{category.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </td>
+                </tr>
+                <tr align="left"><td colspan="2"><input type="submit" value="{% trans 'Reply' %}" /></td></tr>
+              </form>
+            </table>
+        </td></tr>
       </table>
-      {% endif %}
+{% endif %}
 {% endblock %}
