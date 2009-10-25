@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout, views as auth_views
 
 #pybbs imports
 from pybbs.bbs.models import Message, Theme, Category
@@ -150,4 +152,18 @@ def create_theme(request):
         return render_to_response('pybbs/detail.html', {
                 'error_message': _("You are not logged in."),
             })
+			
 
+def logout_user(request):
+    lang_code = request.session['django_language']
+    logout(request)
+    if(lang_code):
+	    request.session['django_language'] = lang_code
+    return HttpResponseRedirect(request.GET.get('url', '/'))
+	
+def login_user(request):
+    auth_views.login(request)    
+    return HttpResponseRedirect(request.GET.get('url', '/'))
+
+			
+			

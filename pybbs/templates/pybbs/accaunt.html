@@ -1,9 +1,13 @@
-      <div class="accauntblock">{% if user.is_authenticated %}
-       Hello , {{ user.username }} <a href="/accounts/logout/">Logout</a>
+{% load i18n %}  
+  <div class="accauntblock">{% if user.is_authenticated %}
+       {% trans 'Hello' %} , {{ user.username }} <a href="/pybbs/logout/?url={{ request.get_full_path }}"> {% trans 'Logout' %} </a>
 	  {% else %}
-	  <form method="post" action="/accounts/login/">Имя пользователя:<input type="text" name="username" />Пароль: <input type="password" name="password" /></p>
-  <input type="submit" value="Войти" /> <a href="/accounts/register/">Регистрация</a>
+	  <form method="post" action="/pybbs/login/?url={{ request.get_full_path }}">
+	  {% trans 'Username' %}:<input type="text" name="username" />
+	  {% trans 'Password' %}: <input type="password" name="password" />
+	  <input type="submit" value="{% trans 'Login' %}" /> 
+	  <a href="/accounts/register/">{% trans 'Registration' %}:</a>
 </form>
 
       {% endif %}
-	  
+	  </div>

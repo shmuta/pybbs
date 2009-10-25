@@ -8,5 +8,7 @@ urlpatterns = patterns('pybbs.bbs',
     (r'^rss/(?P<message_id>\d+)/$','views.rss_by_id'),
     (r'^(?P<message_id>\d+)/$', 'views.detail'),
     (r'^(?P<message_id>\d+)/reply/$', 'views.reply'),
+	(r'^logout/$', 'views.logout_user'),
+	(r'^login/$', 'views.login_user'),
 )
 
