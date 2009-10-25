@@ -51,3 +51,19 @@ msgstr "На!!!"
 #: templates/pybbs/index.html:18
 msgid "No messagess are available."
 msgstr "Сообщений нет."
+
+#: templates/pybbs/account.html:
+msgid "Registration"
+msgstr "Регистрация"
+
+#: templates/pybbs/account.html:
+msgid "Login"
+msgstr "Вход"
+
+#: templates/pybbs/account.html:
+msgid "Logout"
+msgstr "Выход"
+
+#: templates/pybbs/account.html:
+msgid "Hello"
+msgstr "Привет"

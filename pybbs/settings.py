@@ -11,8 +11,8 @@ MANAGERS = ADMINS
 
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'fedoronchuk@gmail.com'
-EMAIL_HOST_PASSWORD = '050886050886'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 LOGIN_REDIRECT_URL = '/pybbs/'  
@@ -82,6 +82,13 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
 )
+
+#activate the template context processor called request to work with  in a template 
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+TEMPLATE_CONTEXT_PROCESSORS += (
+     'django.core.context_processors.request',
+) 
+
 
 INSTALLED_APPS = (
     'django.contrib.auth',
