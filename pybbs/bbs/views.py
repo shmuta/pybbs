@@ -155,7 +155,7 @@ def create_theme(request):
 			
 
 def logout_user(request):
-    lang_code = request.session['django_language']
+    lang_code = request.session.get('django_language')
     logout(request)
     if(lang_code):
 	    request.session['django_language'] = lang_code
